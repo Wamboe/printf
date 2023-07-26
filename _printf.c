@@ -3,6 +3,7 @@
 
 void print_char(va_list arg);
 int print_string(va_list arg);
+int print_int(va_list arg);
 
 /**
  * _printf-printf replica
@@ -28,6 +29,10 @@ int _printf(const char *format, ...)
 					break;
 				case 's':
 					count = print_string(args);
+					break;
+				case 'd':
+				case 'i':
+					count = print_int(args);
 					break;
 				case '%':
 					putchar('%');
@@ -92,5 +97,38 @@ int print_string(va_list arg)
 		count++;
 	}
 
+	return (count);
+}
+
+/**
+ * print_int - Prints an int.
+ * @arg: A list of arguments pointing to
+ *       the integer to be printed.
+ * Return: count of length of digit
+ */
+int print_int(va_list arg)
+{
+	int num = va_arg(arg, int), l = 1, newNum, n, count = 0;
+
+	if (num < 0)
+	{
+		putchar('-');
+		count++;
+		num = num * -1;
+	}
+	newNum = num;
+
+	while (num % 10 > 0)
+	{
+		l = l * 10;
+		num = num / 10;
+		count++;
+	}
+	while (l != 1)
+	{
+		l = l / 10;
+		n = (newNum / l) % 10;
+		putchar(n + 48);
+	}
 	return (count);
 }
